@@ -5,7 +5,7 @@ import router from '@/router/index'
 
 Vue.use(Vuex)
 
-const api = 'http://localhost:8000'
+const api = 'http://api.spracto.net'
 
 export default new Vuex.Store({
   state: {
