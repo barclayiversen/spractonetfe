@@ -5,7 +5,7 @@ import router from '@/router/index'
 
 Vue.use(Vuex)
 
-const api = 'http://api.spracto.net'
+const api = 'https://api.spracto.net'
 
 export default new Vuex.Store({
   state: {
@@ -40,20 +40,30 @@ export default new Vuex.Store({
         username: authData.username
       })
         .then(res => {
-          commit('authUser', {
-            token: res.data.token,
-            userId: res.data.id,
-            username: res.data.username
+          // need to redirect to email confirmation
+          Vue.toasted.show('Sign up Successful. Please check your email to activate your account.', {
+            action: {
+              text: 'Ok',
+              onClick: (e, toastObject) => {
+                toastObject.goAway(0)
+              }
+            }
           })
-          const now = new Date()
-          const expirationDate = new Date(now.getTime() + 3600 * 1000)
-          localStorage.setItem('userId', res.data.id)
-          localStorage.setItem('token', res.data.token)
-          localStorage.setItem('expirationDate', expirationDate)
-          // dispatch('storeUser', authData)
-          dispatch('setLogoutTimer')
-          Vue.toasted.show('Sign up Successful, redirecting...').goAway(2500)
-          router.replace('/dashboard')
+          router.replace('/signin')
+
+        //   commit('authUser', {
+        //     token: res.data.token,
+        //     userId: res.data.id,
+        //     username: res.data.username
+        //   })
+        //   const now = new Date()
+        //   const expirationDate = new Date(now.getTime() + 3600 * 1000)
+        //   localStorage.setItem('userId', res.data.id)
+        //   localStorage.setItem('token', res.data.token)
+        //   localStorage.setItem('expirationDate', expirationDate)
+        //   dispatch('setLogoutTimer')
+        //   Vue.toasted.show('Sign up Successful, redirecting...').goAway(2500)
+        //   router.replace('/dashboard')
         })
         .catch(error => {
           console.log(error)
