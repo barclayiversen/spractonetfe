@@ -1,20 +1,16 @@
 <template>
   <div id="signin">
-    <div class="signin-form">
+    <div class="recover-password-form">
+        <h3>Password recovery</h3>
       <form @submit.prevent="onSubmit">
         <div class="input">
-          <label for="email">Mail</label>
+          <label for="email">E-Mail</label>
           <input type="email" id="email" v-model="email" />
-        </div>
-        <div class="input">
-          <label for="password">Password</label>
-          <input type="password" id="password" v-model="password" />
         </div>
         <div class="submit">
           <button type="submit">Submit</button>
         </div>
       </form>
-      <router-link to="/forgotpassword"><p>Forgot password?</p> </router-link>
     </div>
   </div>
 </template>
@@ -30,13 +26,10 @@ export default {
   methods: {
     onSubmit () {
       const formData = {
-        email: this.email,
-        password: this.password
+        email: this.email
       }
-      console.log(formData)
-      this.$store.dispatch('login', {
-        email: formData.email,
-        password: formData.password
+      this.$store.dispatch('forgotPassword', {
+        email: formData.email
       })
     }
   }
@@ -44,7 +37,7 @@ export default {
 </script>
 
 <style scoped>
-.signin-form {
+.recover-password-form {
   width: 400px;
   margin: 30px auto;
   border: 1px solid #eee;

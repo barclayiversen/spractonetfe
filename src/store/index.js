@@ -5,7 +5,8 @@ import router from '@/router/index'
 
 Vue.use(Vuex)
 
-const api = 'https://api.spracto.net'
+// const api = 'https://api.spracto.net'
+const api = 'http://localhost:8000'
 
 export default new Vuex.Store({
   state: {
@@ -147,6 +148,14 @@ export default new Vuex.Store({
           commit('storeUser', res.data)
         })
         .catch(err => console.log('fetchUser err:', err))
+    },
+    forgotPassword ({ commit, state }, email) {
+      console.log(email)
+      axios.get(api + '/users/recover?email=' + email)
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => console.log('forgotPassword err: ', err))
     }
   },
   getters: {

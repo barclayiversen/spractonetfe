@@ -5,6 +5,7 @@ import Home from '@/views/Home.vue'
 import DashboardPage from '@/views/Dashboard.vue'
 import SignupPage from '@/views/Signup.vue'
 import SigninPage from '@/views/Signin.vue'
+import ForgotPassword from '@/views/ForgotPassword.vue'
 import store from '@/store/index'
 
 Vue.use(VueRouter)
@@ -36,6 +37,20 @@ const routes = [
         next('/signin')
       }
     }
+  },
+
+  {
+    path: '/forgotpassword',
+    component: ForgotPassword,
+    beforeEnter (to, from, next) {
+      store.dispatch('tryAutoLogin')
+      if (store.state.token) {
+        next('/dashboard')
+      } else {
+        next()
+      }
+    }
+
   }
 ]
 
