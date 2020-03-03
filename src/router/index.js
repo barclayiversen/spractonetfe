@@ -7,6 +7,7 @@ import SignupPage from '@/views/Signup.vue'
 import SigninPage from '@/views/Signin.vue'
 import ForgotPassword from '@/views/ForgotPassword.vue'
 import store from '@/store/index'
+import VerifyEmail from '@/views/VerifyEmail.vue'
 
 Vue.use(VueRouter)
 
@@ -51,6 +52,11 @@ const routes = [
       }
     }
 
+  },
+
+  {
+    path: '/verifyemail',
+    component: VerifyEmail
   }
 ]
 
