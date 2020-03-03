@@ -13,7 +13,8 @@ export default new Vuex.Store({
     token: null,
     userId: null,
     user: null,
-    username: ''
+    username: '',
+    verified: null
   },
   mutations: {
     authUser (state, userData) {
@@ -26,6 +27,12 @@ export default new Vuex.Store({
     clearAuthData (state) {
       state.token = null
       state.userId = null
+    },
+    verifyUser (state) {
+      state.verified = true
+    },
+    unverified (state) {
+      state.verified = false
     }
   },
   actions: {
@@ -156,6 +163,30 @@ export default new Vuex.Store({
           console.log(res)
         })
         .catch(err => console.log('forgotPassword err: ', err))
+    },
+    verify ({ commit, state }, verifyData) {
+      var token, userid
+      token = verifyData.token
+      userid = verifyData.userid
+      console.log(token, userid)
+      axios.get(api + '/verifyemail?token=' + token + '&userid=' + userid)
+        .then(res => {
+          commit('verifyUser')
+          console.log('verify log: ', res)
+        })
+        .catch(err => {
+          console.log('verify error: ', err)
+          commit('unverified')
+        })
+    },
+    hello ({ commit, state }) {
+      axios.get(api + '/')
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   },
   getters: {
@@ -164,6 +195,9 @@ export default new Vuex.Store({
     },
     isAuthenticated (state) {
       return state.token !== null
+    },
+    verified (state) {
+      return state.verified
     }
   }
 })
