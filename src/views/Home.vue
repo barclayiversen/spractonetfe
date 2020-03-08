@@ -24,6 +24,9 @@ export default {
     auth () {
       return this.$store.getters.isAuthenticated
     }
+  },
+  created () {
+    return this.$store.dispatch('hello')
   }
 }
 </script>

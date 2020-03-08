@@ -8,6 +8,7 @@ import SigninPage from '@/views/Signin.vue'
 import ForgotPassword from '@/views/ForgotPassword.vue'
 import store from '@/store/index'
 import VerifyEmail from '@/views/VerifyEmail.vue'
+import Verified from '@/views/Verified.vue'
 
 Vue.use(VueRouter)
 
@@ -57,6 +58,11 @@ const routes = [
   {
     path: '/verifyemail',
     component: VerifyEmail
+  },
+
+  {
+    path: '/verified',
+    component: Verified
   }
 ]
 
