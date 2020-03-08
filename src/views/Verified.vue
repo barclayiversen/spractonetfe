@@ -1,54 +1,15 @@
 <template>
   <div id="signin">
     <div class="signin-form">
-      <div>
-        <p>email verified</p>
-      </div>
-      <div>
-        <p>oops something is wrong</p>
-      </div>
-    <p>Give us a moment</p>
+      <div v-if="verified">
+      <p>Email Verified! You may now log in. </p>
+      </div>>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  computed: {
-    // verified () {
-    //   return this.$store.getters.verified
-    // }
-  },
-  data () {
-    return {
-      verifyData: {
-        token: '',
-        userid: ''
-      },
-      loading: true,
-      verified: false
-    }
-  },
-  created () {
-
-  },
-  mounted () {
-    var verifyData = {
-      token: this.$route.query.token,
-      userid: this.$route.query.userid
-    }
-    this.$store.dispatch('verify', verifyData)
-      .then(res => {
-        if (!this.$store.getters.verified) {
-          this.loading = false
-          this.verified = false
-        } else if (this.$store.getters.verified) {
-          this.loading = false
-          this.verified = true
-        }
-      })
-      .catch()
-  }
 }
 </script>
 

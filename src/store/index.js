@@ -173,10 +173,12 @@ export default new Vuex.Store({
         .then(res => {
           commit('verifyUser')
           console.log('verify log: ', res)
+          router.replace('/getToken')
         })
         .catch(err => {
           console.log('verify error: ', err)
           commit('unverified')
+          router.replace('/unverified')
         })
     },
     hello ({ commit, state }) {
