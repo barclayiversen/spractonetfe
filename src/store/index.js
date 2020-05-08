@@ -152,9 +152,22 @@ export default new Vuex.Store({
         }
       })
         .then(res => {
+          console.log(res.data)
           commit('storeUser', res.data)
         })
         .catch(err => console.log('fetchUser err:', err))
+    },
+    fetchPosts ({ commit, state }) {
+      axios.get(api + '/users/' + state.userId + '/posts', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + state.token
+        }
+      })
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => console.log('fetchposts err', err))
     },
     forgotPassword ({ commit, state }, email) {
       console.log(email)
@@ -188,6 +201,20 @@ export default new Vuex.Store({
         })
         .catch(err => {
           console.log(err)
+        })
+    },
+    newPost ({ commit, state }, formData) {
+      axios.post(api + '/users/' + state.userId + '/posts', { title: formData.title, post: formData.post }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + state.token
+        }
+      })
+        .then(res => {
+          console.log('newPost:', res)
+        })
+        .catch(err => {
+          console.log('newPost: ', err)
         })
     }
   },
