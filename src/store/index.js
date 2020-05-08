@@ -109,9 +109,13 @@ export default new Vuex.Store({
       if (!token) {
         return
       }
-      const expirationDate = localStorage.getItem('expirationDate')
+      const expirationDate = new Date(localStorage.getItem('expirationDate'))
       const now = new Date()
-      if (now >= expirationDate) {
+      if (now.getTime() >= expirationDate.getTime()) {
+        localStorage.removeItem('expirationDate')
+        localStorage.removeItem('token')
+        localStorage.removeItem('userId')
+        commit('clearAuthData')
         return
       }
       const userId = localStorage.getItem('userId')
@@ -155,7 +159,9 @@ export default new Vuex.Store({
           console.log(res.data)
           commit('storeUser', res.data)
         })
-        .catch(err => console.log('fetchUser err:', err))
+        .catch(err => {
+          console.log('fetchUser err:', err)
+        })
     },
     fetchPosts ({ commit, state }) {
       axios.get(api + '/users/' + state.userId + '/posts', {
