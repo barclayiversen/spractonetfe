@@ -14,7 +14,8 @@ export default new Vuex.Store({
     userId: null,
     user: null,
     username: '',
-    verified: null
+    verified: null,
+    posts: []
   },
   mutations: {
     authUser (state, userData) {
@@ -33,6 +34,9 @@ export default new Vuex.Store({
     },
     unverified (state) {
       state.verified = false
+    },
+    convertUnixToDatetime (state, userPosts) {
+      state.posts = userPosts
     }
   },
   actions: {
@@ -58,20 +62,6 @@ export default new Vuex.Store({
             }
           })
           router.replace('/signin')
-
-        //   commit('authUser', {
-        //     token: res.data.token,
-        //     userId: res.data.id,
-        //     username: res.data.username
-        //   })
-        //   const now = new Date()
-        //   const expirationDate = new Date(now.getTime() + 3600 * 1000)
-        //   localStorage.setItem('userId', res.data.id)
-        //   localStorage.setItem('token', res.data.token)
-        //   localStorage.setItem('expirationDate', expirationDate)
-        //   dispatch('setLogoutTimer')
-        //   Vue.toasted.show('Sign up Successful, redirecting...').goAway(2500)
-        //   router.replace('/dashboard')
         })
         .catch(error => {
           console.log(error)
@@ -171,9 +161,31 @@ export default new Vuex.Store({
         }
       })
         .then(res => {
-          console.log(res)
+          var monthsArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+          for (let p in res.data) {
+            var date = new Date(Number(res.data[p].created_at, 10) * 1000)
+            // Year
+            var year = date.getFullYear()
+            // Month
+            var month = monthsArr[date.getMonth()]
+
+            // Day
+            var day = date.getDate()
+
+            // Hours
+            var hours = date.getHours()
+
+            // Minutes
+            var minutes = '0' + date.getMinutes()
+
+            // Display date time in MM-dd-yyyy h:m format
+            var convdataTime = month + ' ' + day + ', ' + year + ' ' + hours + ':' + minutes.substr(-2)
+
+            res.data[p].created_at = convdataTime
+          }
+          commit('convertUnixToDatetime', res.data)
         })
-        .catch(err => console.log('fetchposts err', err))
+        .catch(err => console.log('fetchposts err::', err))
     },
     forgotPassword ({ commit, state }, email) {
       console.log(email)
@@ -233,6 +245,9 @@ export default new Vuex.Store({
     },
     verified (state) {
       return state.verified
+    },
+    posts (state) {
+      return state.posts
     }
   }
 })

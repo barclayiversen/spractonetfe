@@ -16,9 +16,7 @@
     <div class="posts">
     <h4>Your posts</h4>
     <ul>
-      <li class="post">Feb 12, 2020 <br><p>Hey Dude!</p></li>
-      <li class="post">Feb 9, 2020 <br><p>So tubular</p></li>
-      <li class="post">Feb 2, 2020 <br><p>Oh no I feel sick</p></li>
+      <li v-for="post in posts" :key="post.id" class="post">{{post.created_at}}<br><p>{{post.post}}</p></li>
     </ul>
     </div>
   </div>
