@@ -16,7 +16,7 @@
     <div class="posts">
     <h4>Your posts</h4>
     <ul>
-      <li v-for="post in posts" :key="post.id" class="post">{{post.created_at}}<br><p>{{post.post}}</p></li>
+      <li v-for="post in posts" :key="post.id" class="post"><span class="postDate">{{post.created_at}}</span><br><h3 class="postTitle">{{post.title}}</h3><p class="postContent">{{post.post}}</p></li>
     </ul>
     </div>
   </div>
@@ -92,7 +92,9 @@ p {
 }
 
 .post {
-  border: 3px solid white;
+  border: 3px solid #2d3436;
+  margin: 1%;
+  padding-top: 1%;
 }
 
 .button {
@@ -105,4 +107,11 @@ p {
   display: inline-block;
   font-size: 16px;
 }
+
+.postTitle {
+  padding-left: 3%;
+}
+
+.postDate {
+  padding-left: 3%;}
 </style>

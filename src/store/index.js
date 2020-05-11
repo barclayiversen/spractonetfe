@@ -36,7 +36,7 @@ export default new Vuex.Store({
       state.verified = false
     },
     convertUnixToDatetime (state, userPosts) {
-      state.posts = userPosts
+      state.posts = userPosts.reverse()
     }
   },
   actions: {
