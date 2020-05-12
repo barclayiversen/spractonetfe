@@ -16,7 +16,13 @@
     <div class="posts">
     <h4>Your posts</h4>
     <ul>
-      <li v-for="post in posts" :key="post.id" class="post"><span class="postDate">{{post.created_at}}</span><br><h3 class="postTitle">{{post.title}}</h3><p class="postContent">{{post.post}}</p></li>
+      <li v-for="post in posts" :key="post.id" class="post">
+        <span class="postDate">{{post.created_at}}</span>
+        <br>
+        <h3 class="postTitle">{{post.title}}</h3>
+        <button class="deleteButton" v-on:click="deletePost(post.id)">Delete post</button>
+        <p class="postContent">{{post.post}}</p>
+      </li>
     </ul>
     </div>
   </div>
@@ -51,6 +57,25 @@ export default {
         post: this.post
       }
       this.$store.dispatch('newPost', formData)
+    },
+    deletePost (postId) {
+      this.$toasted.show('Are you sure?', {
+        action: [
+          {
+            text: 'Confirm',
+            onClick: (e, toastObject) => {
+              this.$store.dispatch('deletePost', postId)
+              toastObject.goAway(0)
+            }
+          },
+          {
+            text: 'Cancel',
+            onClick: (e, toastObject) => {
+              toastObject.goAway(0)
+            }
+          }
+        ]
+      })
     }
   },
   created () {
@@ -92,9 +117,9 @@ p {
 }
 
 .post {
-  border: 3px solid #2d3436;
-  margin: 1%;
-  padding-top: 1%;
+  border: 1px green;
+  margin: 1% 1% 10% 1%;
+  padding: 1% 0% 7% 0%;
 }
 
 .button {
@@ -113,5 +138,18 @@ p {
 }
 
 .postDate {
-  padding-left: 3%;}
+  padding-left: 3%;
+  }
+
+.deleteButton {
+  background-color: #f44336; /* red */
+  border: none;
+  color: white;
+  padding: 10px 22px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  float: right;
+}
 </style>

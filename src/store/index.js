@@ -35,7 +35,7 @@ export default new Vuex.Store({
     unverified (state) {
       state.verified = false
     },
-    convertUnixToDatetime (state, userPosts) {
+    populatePosts (state, userPosts) {
       state.posts = userPosts.reverse()
     }
   },
@@ -52,7 +52,6 @@ export default new Vuex.Store({
         username: authData.username
       })
         .then(res => {
-          // need to redirect to email confirmation
           Vue.toasted.show('Sign up Successful. Please check your email to activate your account.', {
             action: {
               text: 'Ok',
@@ -75,7 +74,6 @@ export default new Vuex.Store({
 
       })
         .then(res => {
-          console.log(res)
           commit('authUser', {
             token: res.data.token,
             userId: res.data.id,
@@ -139,6 +137,9 @@ export default new Vuex.Store({
       if (!state.userId) {
         return
       }
+      if (state.user != null) {
+        return
+      }
       axios.get(api + '/users/' + state.userId, {
         headers: {
           'Content-Type': 'application/json',
@@ -153,7 +154,25 @@ export default new Vuex.Store({
           console.log('fetchUser err:', err)
         })
     },
+    deletePost ({ commit, state }, postId) {
+      console.log('post id', postId)
+      axios.delete(api + '/posts/' + postId, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + state.token
+        }
+      })
+        .then(res => {
+          console.log('delete post res', res)
+        })
+        .catch(err => {
+          console.log('deletePosterr', err)
+        })
+    },
     fetchPosts ({ commit, state }) {
+      if (state.posts.length !== 0) {
+        return
+      }
       axios.get(api + '/users/' + state.userId + '/posts', {
         headers: {
           'Content-Type': 'application/json',
@@ -178,12 +197,12 @@ export default new Vuex.Store({
             // Minutes
             var minutes = '0' + date.getMinutes()
 
-            // Display date time in MM-dd-yyyy h:m format
+            // Display date time in MM dd, yyyy h:m format
             var convdataTime = month + ' ' + day + ', ' + year + ' ' + hours + ':' + minutes.substr(-2)
 
             res.data[p].created_at = convdataTime
           }
-          commit('convertUnixToDatetime', res.data)
+          commit('populatePosts', res.data)
         })
         .catch(err => console.log('fetchposts err::', err))
     },
@@ -215,7 +234,7 @@ export default new Vuex.Store({
     hello ({ commit, state }) {
       axios.get(api + '/')
         .then(res => {
-          console.log(res)
+          console.log()
         })
         .catch(err => {
           console.log(err)
@@ -230,6 +249,7 @@ export default new Vuex.Store({
       })
         .then(res => {
           console.log('newPost:', res)
+          router.replace('/dashboard')
         })
         .catch(err => {
           console.log('newPost: ', err)
