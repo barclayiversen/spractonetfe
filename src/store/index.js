@@ -221,14 +221,18 @@ export default new Vuex.Store({
       console.log(token, userid)
       axios.get(api + '/verifyemail?token=' + token + '&userid=' + userid)
         .then(res => {
-          commit('verifyUser')
+          // commit('verifyUser')
           console.log('verify log: ', res)
-          router.replace('/getToken')
+          commit('authUser', {
+            token: res.data,
+            userId: userid
+          })
+          router.replace('/dashboard')
         })
         .catch(err => {
           console.log('verify error: ', err)
           commit('unverified')
-          router.replace('/unverified')
+          // router.replace('/unverified')
         })
     },
     hello ({ commit, state }) {
