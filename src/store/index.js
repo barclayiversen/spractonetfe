@@ -44,6 +44,13 @@ export default new Vuex.Store({
     },
     populatePosts (state, userPosts) {
       state.posts = userPosts.reverse()
+    },
+    updatePosts (state, postId) {
+      for (let i in state.posts) {
+        if (state.posts[i].id === postId) {
+          state.posts.splice(i, 1)
+        }
+      }
     }
   },
   actions: {
@@ -92,11 +99,11 @@ export default new Vuex.Store({
           localStorage.setItem('token', res.data.token)
           localStorage.setItem('expirationDate', expirationDate)
           dispatch('setLogoutTimer')
-          Vue.toasted.show('Login Successful, redirecting...').goAway(2500)
+          Vue.toasted.show('Login Successful, redirecting...').goAway(2000)
           router.replace('/dashboard')
         })
         .catch(error => {
-          Vue.toasted.show(error.response.data.message).goAway(4000)
+          Vue.toasted.show(error.response.data.message).goAway(3000)
         })
     },
     tryAutoLogin ({ commit }) {
@@ -173,6 +180,7 @@ export default new Vuex.Store({
       })
         .then(res => {
           console.log('delete post res', res)
+          commit('updatePosts', postId)
         })
         .catch(err => {
           console.log('deletePosterr', err)
