@@ -2,12 +2,10 @@
   <div id="signin">
     <div class="signin-form">
       <div>
-        <p>email verified</p>
       </div>
       <div>
-        <p>oops something is wrong</p>
+        <p>Please try logging in.</p>
       </div>
-    <p>Give us a moment</p>
     </div>
   </div>
 </template>
