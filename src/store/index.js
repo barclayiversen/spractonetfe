@@ -29,6 +29,13 @@ export default new Vuex.Store({
       state.token = null
       state.userId = null
     },
+    clearPostsData (state) {
+      state.posts = []
+    },
+    clearUserData (state) {
+      state.user = null
+      state.username = ''
+    },
     verifyUser (state) {
       state.verified = true
     },
@@ -114,6 +121,8 @@ export default new Vuex.Store({
     },
     logout ({ commit }) {
       commit('clearAuthData')
+      commit('clearPostsData')
+      commit('clearUserData')
       localStorage.removeItem('expirationDate')
       localStorage.removeItem('token')
       localStorage.removeItem('userId')
