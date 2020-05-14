@@ -45,7 +45,7 @@ export default new Vuex.Store({
     populatePosts (state, userPosts) {
       state.posts = userPosts.reverse()
     },
-    updatePosts (state, postId) {
+    deletePostById (state, postId) {
       for (let i in state.posts) {
         if (state.posts[i].id === postId) {
           state.posts.splice(i, 1)
@@ -180,7 +180,7 @@ export default new Vuex.Store({
       })
         .then(res => {
           console.log('delete post res', res)
-          commit('updatePosts', postId)
+          commit('deletePostById', postId)
         })
         .catch(err => {
           console.log('deletePosterr', err)
@@ -270,7 +270,7 @@ export default new Vuex.Store({
       })
         .then(res => {
           console.log('newPost:', res)
-          router.replace('/dashboard')
+          commit('updatePosts', res)
         })
         .catch(err => {
           console.log('newPost: ', err)
