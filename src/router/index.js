@@ -9,10 +9,21 @@ import ForgotPassword from '@/views/ForgotPassword.vue'
 import store from '@/store/index'
 import VerifyEmail from '@/views/VerifyEmail.vue'
 import Verified from '@/views/Verified.vue'
+import Post from '@/components/Post.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  { path: '/newpost',
+    component: Post,
+    beforeEnter (to, from, next) {
+      if (store.getters.isAuthenticated) {
+        next()
+      } else {
+        next('/signin')
+      }
+    }
+  },
   { path: '/', component: Home },
   { path: '/signup', component: SignupPage },
   {

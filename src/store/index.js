@@ -45,8 +45,31 @@ export default new Vuex.Store({
     populatePosts (state, userPosts) {
       state.posts = userPosts.reverse()
     },
+    updatePosts (state, newPost) {
+      var monthsArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      var date = new Date(Number(newPost.created_at, 10) * 1000)
+      // Year
+      var year = date.getFullYear()
+      // Month
+      var month = monthsArr[date.getMonth()]
+
+      // Day
+      var day = date.getDate()
+
+      // Hours
+      var hours = date.getHours()
+
+      // Minutes
+      var minutes = '0' + date.getMinutes()
+
+      // Display date time in MM dd, yyyy h:m format
+      var convdataTime = month + ' ' + day + ', ' + year + ' ' + hours + ':' + minutes.substr(-2)
+      newPost.created_at = convdataTime
+      state.posts.unshift(newPost)
+    },
     deletePostById (state, postId) {
       for (let i in state.posts) {
+        state.posts[i].editing = false
         if (state.posts[i].id === postId) {
           state.posts.splice(i, 1)
         }
@@ -269,8 +292,9 @@ export default new Vuex.Store({
         }
       })
         .then(res => {
-          console.log('newPost:', res)
-          commit('updatePosts', res)
+          console.log('newPost:', res.data)
+          commit('updatePosts', res.data)
+          router.replace('/dashboard')
         })
         .catch(err => {
           console.log('newPost: ', err)

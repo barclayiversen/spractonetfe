@@ -5,23 +5,23 @@
     <p class="red">You should only get here if you're authenticated!</p>
     <p v-if="email">Your email address: {{ email }}</p>
     <p>Your Username is : {{ username }}</p>
-   <form @submit.prevent="onSubmit">
-
-    <h4>Create a post</h4>
-    <input class="postTitle" name="title" v-model="title" placeholder="Title your post">
-    <textarea class="newPost" id="exampleFormControlTextarea1" rows="3" v-model="post"></textarea>
-
-  <button type="submit" class="button">Submit</button>
-</form>
+    <div class="centered">
+      <router-link to="/newpost"><button class="button"> New Post </button></router-link>
+    </div>
     <div class="posts">
     <h4>Your posts</h4>
+    <template class="postEditor" v-if="editing">
+      <input type="text" class="editTitle">
+      <textarea></textarea>
+    </template>
     <ul>
       <li v-for="post in posts" :key="post.id" class="post">
         <span class="postDate">{{post.created_at}}</span>
         <br>
         <h3 class="postTitle">{{post.title}}</h3>
-        <button class="deleteButton" v-on:click="deletePost(post.id)">Delete post</button>
         <p class="postContent">{{post.post}}</p>
+        <button class="editButton" v-on:click="editPost(post.id)">Edit post</button>
+        <button class="deleteButton" v-on:click="deletePost(post.id)">Delete post</button>
       </li>
     </ul>
     </div>
@@ -34,7 +34,8 @@ export default {
   data () {
     return {
       title: '',
-      post: ''
+      post: '',
+      editing: false
     }
   },
   computed: {
@@ -76,6 +77,10 @@ export default {
           }
         ]
       })
+    },
+    editPost (postId) {
+      this.editing = true
+      console.log(postId)
     }
   },
   created () {
@@ -89,6 +94,7 @@ export default {
 .container {
   padding: 0% 10% 10% 10%;
 }
+
 form {
     display: inline-block;
 }
@@ -117,20 +123,38 @@ p {
 }
 
 .post {
-  border: 1px green;
+  border: 1px solid green;
   margin: 1% 1% 10% 1%;
-  padding: 1% 0% 7% 0%;
+  padding: 1% 2% 2% 2%;
+
+}
+
+.posts {
+  margin: 10% 1% 1% 1%;
+  padding: 2% 2% 2% 2%;
 }
 
 .button {
-  background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 
 .postTitle {
@@ -140,6 +164,17 @@ p {
 .postDate {
   padding-left: 3%;
   }
+
+.centered {
+  display: inline-block;
+  padding: 10% 0% 10% 0%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+
+}
 
 .deleteButton {
   background-color: #f44336; /* red */
@@ -151,5 +186,29 @@ p {
   display: block;
   font-size: 14px;
   float: right;
+}
+
+.editButton {
+  background-color: #008CBA;
+  border: none;
+  color: white;
+  padding: 10px 22px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.editButton:hover {background-color: #555555}
+
+.editButton:active {
+  background-color: #3e8e41;
+}
+
+.editButton:active:after {
+    padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: 0s
 }
 </style>
