@@ -24,6 +24,17 @@ const routes = [
       }
     }
   },
+  {
+    path: '/editpost',
+    component: Post,
+    beforeEnter (to, from, next) {
+      if (store.getters.isAuthenticated) {
+        next()
+      } else {
+        next('/signin')
+      }
+    }
+  },
   { path: '/', component: Home },
   { path: '/signup', component: SignupPage },
   {
