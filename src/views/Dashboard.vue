@@ -1,19 +1,15 @@
 <template>
 <div class="container">
   <div id="dashboard">
-    <h1>This is the dashboard!</h1>
+    <div class="jumbotron">
+          <h1>This is the dashboard!</h1>
     <p class="red">You should only get here if you're authenticated!</p>
     <p v-if="email">Your email address: {{ email }}</p>
     <p>Your Username is : {{ username }}</p>
-    <div class="centered">
-      <router-link to="/newpost"><button class="button"> New Post </button></router-link>
+
     </div>
     <div class="posts">
     <h4>Your posts</h4>
-    <template class="postEditor" v-if="editing">
-      <input type="text" class="editTitle">
-      <textarea></textarea>
-    </template>
     <ul>
       <li v-for="post in posts" :key="post.id" class="post">
         <span class="postDate">{{post.created_at}}</span>
@@ -79,8 +75,8 @@ export default {
       })
     },
     editPost (postId) {
-      this.editing = true
       console.log(postId)
+      this.$router.replace('/editpost/' + postId)
     }
   },
   created () {
@@ -91,6 +87,10 @@ export default {
 </script>
 
 <style scoped>
+.jumbotron {
+  border: 1px solid black;
+  margin-top: 2em;
+}
 .container {
   padding: 0% 10% 10% 10%;
 }
@@ -167,7 +167,7 @@ p {
 
 .centered {
   display: inline-block;
-  padding: 10% 0% 10% 0%;
+  padding: 10px 10px 25px 10px;
   position: absolute;
   top: 50%;
   left: 50%;
