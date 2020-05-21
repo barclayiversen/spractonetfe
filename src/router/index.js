@@ -10,6 +10,7 @@ import store from '@/store/index'
 import VerifyEmail from '@/views/VerifyEmail.vue'
 import Verified from '@/views/Verified.vue'
 import Post from '@/components/Post.vue'
+import Editpost from '@/views/Editpost.vue'
 
 Vue.use(VueRouter)
 
@@ -25,8 +26,8 @@ const routes = [
     }
   },
   {
-    path: '/editpost',
-    component: Post,
+    path: '/editpost/:id',
+    component: Editpost,
     beforeEnter (to, from, next) {
       if (store.getters.isAuthenticated) {
         next()

@@ -3,10 +3,11 @@
   <form @submit.prevent="onSubmit">
     <h4>Edit your post</h4>
     <div class="titlediv">
-    <input class="postTitle" name="title" v-model="title"  />
+    <input class="postTitle" name="title" v-model="post.title"  />
     </div>
+    {{ post }}
     <div class="contentdiv">
-    <textarea class="post" rows="3" v-model="post" placeholder="Some great  content..."></textarea>
+    <textarea class="post" rows="3" v-model="post.post" ></textarea>
     </div>
     <button type="submit" class="button">Submit</button>
   </form>
@@ -17,10 +18,17 @@
 export default {
   data () {
     return {
-      title: '',
-      post: ''
+      post: {
+        title: '',
+        post: ''
+      }
     }
   },
+  // computed: {
+  //   post () {
+  //     return !this.$store.getters.post ? false : this.$store.getters.post
+  //   }
+  // },
   methods: {
     onSubmit () {
       const formData = {
@@ -29,6 +37,10 @@ export default {
       }
       this.$store.dispatch('updatePost', formData)
     }
+  },
+  created () {
+    this.$store.dispatch('fetchPostByID', this.$route.params['id'])
+    console.log(this.$route.params)
   }
 }
 </script>
