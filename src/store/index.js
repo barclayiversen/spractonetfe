@@ -15,7 +15,8 @@ export default new Vuex.Store({
     user: null,
     username: '',
     verified: null,
-    posts: []
+    posts: [],
+    post: null
   },
   mutations: {
     authUser (state, userData) {
@@ -292,13 +293,32 @@ export default new Vuex.Store({
         }
       })
         .then(res => {
-          console.log('newPost:', res.data)
+          console.log('newPost res:', res.data)
           commit('updatePosts', res.data)
           router.replace('/dashboard')
         })
         .catch(err => {
           console.log('newPost: ', err)
         })
+    },
+    fetchPostByID ({ commit, state }, postID) {
+      for (let i = 0; i < state.posts.length; i++) {
+        console.log(state.posts[i].id)
+        postID = parseInt(postID)
+        if (state.posts[i].id === postID) {
+          console.log('it matches!', state.posts[i].id, postID)
+          state.post = state.posts[i]
+          console.log(state.post)
+          return
+        }
+      }
+      // axios.get(api + '/posts/' + postID)
+      //   .then(res => {
+      //     console.log('fetchpostbyID res', res)
+      //   })
+      //   .catch(err => {
+      //     console.log('fetchPostbyID err', err)
+      //   })
     }
   },
   getters: {
@@ -313,6 +333,9 @@ export default new Vuex.Store({
     },
     posts (state) {
       return state.posts
+    },
+    postToEdit (state) {
+      return state.post
     }
   }
 })
