@@ -5,11 +5,37 @@ import Home from '@/views/Home.vue'
 import DashboardPage from '@/views/Dashboard.vue'
 import SignupPage from '@/views/Signup.vue'
 import SigninPage from '@/views/Signin.vue'
+import ForgotPassword from '@/views/ForgotPassword.vue'
 import store from '@/store/index'
+import VerifyEmail from '@/views/VerifyEmail.vue'
+import Verified from '@/views/Verified.vue'
+import Post from '@/components/Post.vue'
+import Editpost from '@/views/Editpost.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  { path: '/newpost',
+    component: Post,
+    beforeEnter (to, from, next) {
+      if (store.getters.isAuthenticated) {
+        next()
+      } else {
+        next('/signin')
+      }
+    }
+  },
+  {
+    path: '/editpost/:id',
+    component: Editpost,
+    beforeEnter (to, from, next) {
+      if (store.getters.isAuthenticated) {
+        next()
+      } else {
+        next('/signin')
+      }
+    }
+  },
   { path: '/', component: Home },
   { path: '/signup', component: SignupPage },
   {
@@ -36,6 +62,30 @@ const routes = [
         next('/signin')
       }
     }
+  },
+
+  {
+    path: '/forgotpassword',
+    component: ForgotPassword,
+    beforeEnter (to, from, next) {
+      store.dispatch('tryAutoLogin')
+      if (store.state.token) {
+        next('/dashboard')
+      } else {
+        next()
+      }
+    }
+
+  },
+
+  {
+    path: '/verifyemail',
+    component: VerifyEmail
+  },
+
+  {
+    path: '/verified',
+    component: Verified
   }
 ]
 

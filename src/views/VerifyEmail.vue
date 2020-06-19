@@ -1,44 +1,51 @@
 <template>
   <div id="signin">
     <div class="signin-form">
-      <form @submit.prevent="onSubmit">
-        <div class="input">
-          <label for="email">Mail</label>
-          <input type="email" id="email" v-model="email" />
-        </div>
-        <div class="input">
-          <label for="password">Password</label>
-          <input type="password" id="password" v-model="password" />
-        </div>
-        <div class="submit">
-          <button type="submit">Submit</button>
-        </div>
-      </form>
-      <router-link to="/forgotpassword"><p>Forgot password?</p> </router-link>
+      <div>
+      </div>
+      <div>
+        <p>Please try logging in.</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  computed: {
+    // verified () {
+    //   return this.$store.getters.verified
+    // }
+  },
   data () {
     return {
-      email: '',
-      password: ''
+      verifyData: {
+        token: '',
+        userid: ''
+      },
+      loading: true,
+      verified: false
     }
   },
-  methods: {
-    onSubmit () {
-      const formData = {
-        email: this.email,
-        password: this.password
-      }
-      console.log(formData)
-      this.$store.dispatch('login', {
-        email: formData.email,
-        password: formData.password
-      })
+  created () {
+
+  },
+  mounted () {
+    var verifyData = {
+      token: this.$route.query.token,
+      userid: this.$route.query.userid
     }
+    this.$store.dispatch('verify', verifyData)
+      .then(res => {
+        if (!this.$store.getters.verified) {
+          this.loading = false
+          this.verified = false
+        } else if (this.$store.getters.verified) {
+          this.loading = false
+          this.verified = true
+        }
+      })
+      .catch()
   }
 }
 </script>
