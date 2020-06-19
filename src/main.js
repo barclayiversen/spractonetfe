@@ -10,7 +10,7 @@ import Toasted from 'vue-toasted'
 Vue.use(Vuelidate)
 Vue.use(Toasted)
 
-axios.defaults.baseURL = 'http://localhost:8000'
+axios.defaults.baseURL = 'https://api.spracto.net:443'
 axios.defaults.headers.get['Accepts'] = 'application/json'
 axios.defaults.headers.common['Content-Type'] = 'application/json'
 
