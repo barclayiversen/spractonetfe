@@ -18,17 +18,14 @@
 export default {
   data () {
     return {
-      post: {
-        title: '',
-        post: ''
-      }
+      // post: {}
     }
   },
-  // computed: {
-  //   post () {
-  //     return !this.$store.getters.post ? false : this.$store.getters.post
-  //   }
-  // },
+  computed: {
+    post () {
+      return !this.$store.getters.post ? false : this.$store.getters.post
+    }
+  },
   methods: {
     onSubmit () {
       const formData = {
@@ -36,11 +33,16 @@ export default {
         post: this.post
       }
       this.$store.dispatch('updatePost', formData)
+    },
+    fetchData () {
+      // this.error = this.post = null
+      // this.loading = true
+      console.log('fetch')
+      this.$store.dispatch('fetchPostByID', this.$route.params['id'])
     }
   },
   created () {
-    this.$store.dispatch('fetchPostByID', this.$route.params['id'])
-    console.log(this.$route.params)
+    this.fetchData()
   }
 }
 </script>

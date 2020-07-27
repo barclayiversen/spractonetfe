@@ -75,6 +75,10 @@ export default new Vuex.Store({
           state.posts.splice(i, 1)
         }
       }
+    },
+    editPostObject (state, post) {
+      state.post = post
+      console.log('mutation', state.post)
     }
   },
   actions: {
@@ -302,14 +306,13 @@ export default new Vuex.Store({
         })
     },
     fetchPostByID ({ commit, state }, postID) {
+      console.log(postID)
       for (let i = 0; i < state.posts.length; i++) {
-        console.log(state.posts[i].id)
+        console.log('fetch post by id', state.posts[i].id)
         postID = parseInt(postID)
         if (state.posts[i].id === postID) {
           console.log('it matches!', state.posts[i].id, postID)
-          state.post = state.posts[i]
-          console.log(state.post)
-          return
+          commit('editPostObject', state.posts[i])
         }
       }
       // axios.get(api + '/posts/' + postID)
